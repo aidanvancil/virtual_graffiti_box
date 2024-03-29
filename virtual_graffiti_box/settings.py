@@ -20,9 +20,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-sn73sgam#p1p^-!#i4&i%nhmdjg2&!)2qs7u70^@1t6n#e0=k6'
+SECRET_KEY = 'django-insecure-z7t*d98-np-+2t4!pco*v+vj4vji=l%%8i5b0v3wh0q@g(k$^0'
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don't run with debug tupython manage.py shell -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1'] # '27fc-47-33-18-76.ngrok-free.app', 
