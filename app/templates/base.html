@@ -1,0 +1,39 @@
+{% comment %}   
+    Author(s): Aidan Vancil (A)
+    Date(s):   11/12/23 - 12/03/23
+    
+    Description:
+    - (A) Initial base template
+{% endcomment %}
+
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <title>Virtual Graffiti</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta name="csrf-token" content="{{ csrf_token }}">
+		<link rel="icon" href="{% static 'site/favicon.ico' %}" type="image/x-icon">
+    	<link rel="shortcut icon" href="{% static 'site/favicon.ico' %}" type="image/x-icon">
+		{% tailwind_css %}
+	</head>
+
+	<body class="overflow-hidden bg-black">
+		<header>
+			<div class="ml-[2.5%] flex text-white mt-5">
+				<div class="flex">
+					<a href="/" class="space-x-5 flex items-center text-xl">
+						<img src="{% static 'site/logo.png' %}" alt="" style="width: 10%;">
+						<div class="font-bold">Virtual Graffiti</div>
+					</a>
+				</div>
+			</div>
+		</header>
+	
+		<main class="">
+			{% block content %}{% endblock %}
+		</main>
+	</body>
+</html>
