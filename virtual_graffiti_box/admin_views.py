@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.decorators import gzip
 from django.http import StreamingHttpResponse, JsonResponse, HttpResponse
 from subprocess import Popen
-from virtual_graffiti.resources import algorithm
+from virtual_graffiti_box.resources import algorithm
 from django.utils import timezone
 import threading
 import cv2
@@ -34,7 +34,7 @@ def init(request):
         if not request.session.get('init', False):
             request.session['init'] = True
             try:
-                absolute_path = os.path.abspath('virtual_graffiti/temp/reset_signal.txt')
+                absolute_path = os.path.abspath('virtual_graffiti_box/temp/reset_signal.txt')
                 with open(absolute_path, 'w') as f:
                     f.seek(0)
                     f.write('0')
@@ -42,7 +42,7 @@ def init(request):
                 print(e)
                 pass
             
-        Popen(["python", "virtual_graffiti/resources/algorithm.py"])
+        Popen(["python", "virtual_graffiti_box/resources/algorithm.py"])
     return redirect('admin_panel')
 
 def pull(request):

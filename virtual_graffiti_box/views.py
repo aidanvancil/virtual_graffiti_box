@@ -158,7 +158,7 @@ def logout(request):
 @login_required(login_url='login')
 def admin_panel(request):
     try:
-        absolute_path = os.path.abspath('virtual_graffiti/temp/reset_signal.txt')
+        absolute_path = os.path.abspath('virtual_graffiti_box/temp/reset_signal.txt')
         with open(absolute_path, 'r+') as f:
             reset_signal = int(f.read().strip())
             if reset_signal:
@@ -200,7 +200,7 @@ def errors(request, error_code=404):
 @csrf_exempt
 def check_reset_signal(request):
     try:
-        absolute_path = os.path.abspath('virtual_graffiti/temp/reset_signal.txt')
+        absolute_path = os.path.abspath('virtual_graffiti_box/temp/reset_signal.txt')
         with open(absolute_path, 'r') as f:
             reset_signal = int(f.read().strip())
         return JsonResponse({'reset_signal': reset_signal})

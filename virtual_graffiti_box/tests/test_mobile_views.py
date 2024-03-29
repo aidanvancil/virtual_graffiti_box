@@ -1,6 +1,6 @@
 from django.test import TestCase
 from app.models import UserProfile, Laser
-from virtual_graffiti.mobile_views import settings
+from virtual_graffiti_box.mobile_views import settings
 import base64
 
 class TestSettingsView(TestCase):

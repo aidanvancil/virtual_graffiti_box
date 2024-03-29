@@ -1,5 +1,5 @@
 # Virtual Graffiti
-![logo](https://github.com/aidanvancil/virtual_graffiti/assets/42700427/31b8720b-67e0-4368-886a-e223dfc00d05)
+![logo](https://github.com/aidanvancil/virtual_graffiti_box/assets/42700427/31b8720b-67e0-4368-886a-e223dfc00d05)
 
 Welcome to Virtual Graffiti! This project allows you to create amazing digital and displayable artwork with ease. Follow the instructions below to get started (for Team 33 [Aidan Vancil, Foster Schmidt, Moises Moreno]).
 
@@ -59,6 +59,6 @@ Before you begin, ensure you have the following installed:
 
 ## Current Progress
 
-![settings](https://github.com/aidanvancil/virtual_graffiti/assets/42700427/0e2a59b2-6385-42ef-97a7-87562db8a5c8)
-![QR_code](https://github.com/aidanvancil/virtual_graffiti/assets/42700427/624cdc4e-c743-4213-9ef2-b15ec723203b)
-![registration](https://github.com/aidanvancil/virtual_graffiti/assets/42700427/eac12238-9b77-4327-b4db-f6a9b384f1d4)
+![settings](https://github.com/aidanvancil/virtual_graffiti_box/assets/42700427/0e2a59b2-6385-42ef-97a7-87562db8a5c8)
+![QR_code](https://github.com/aidanvancil/virtual_graffiti_box/assets/42700427/624cdc4e-c743-4213-9ef2-b15ec723203b)
+![registration](https://github.com/aidanvancil/virtual_graffiti_box/assets/42700427/eac12238-9b77-4327-b4db-f6a9b384f1d4)

@@ -320,7 +320,7 @@ def init():
                     
             key = cv2.waitKey(1) & 0xFF
             if key == ord('q'):
-                absolute_path = os.path.abspath('./../virtual_graffiti/virtual_graffiti/temp/reset_signal.txt')
+                absolute_path = os.path.abspath('./../virtual_graffiti_box/virtual_graffiti_box/temp/reset_signal.txt')
                 try:
                     with open(absolute_path, 'w') as f:
                             f.seek(0)

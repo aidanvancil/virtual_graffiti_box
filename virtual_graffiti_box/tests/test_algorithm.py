@@ -2,7 +2,7 @@ import os
 import cv2
 import numpy as np
 from django.test import TestCase
-from virtual_graffiti.resources import algorithm as alg
+from virtual_graffiti_box.resources import algorithm as alg
 
 class ColorSegmentationTest(TestCase):
     def setUp(self):
