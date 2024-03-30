@@ -22,5 +22,5 @@ urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
     path('admin/', admin.site.urls),
     path('', views.admin_panel, name='admin_panel'),
-    re_path(r'^.*/$', views.errors, name='errors'),
+    #re_path(r'^.*/$', views.errors, name='errors'),
 ]
