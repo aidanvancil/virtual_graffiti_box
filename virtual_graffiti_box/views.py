@@ -67,6 +67,34 @@ def admin_panel(request):
 
     return render(request, 'admin_panel.html', context)
 
+def settings(request, user_identifier):
+    try:
+        user_identifier_decoded = base64.b64decode(user_identifier).decode('utf-8')
+        first_name, last_name, laser_pointer_id = user_identifier_decoded.split('_')
+    except:
+        return errors(request, error_code=302)
+    
+    try:
+        laser_pointer = Laser.objects.get(id=laser_pointer_id)
+        user = UserProfile.objects.get(first_name=first_name, last_name=last_name, laser=laser_pointer)
+    except UserProfile.DoesNotExist:
+        print("User profile does not exist.")
+        return errors(request, error_code=302)
+    except Laser.DoesNotExist:
+        print("Laser does not exist.")
+        return errors(request, error_code=302)
+    except Exception as e:
+        print("Error retrieving user profile:", e)
+        return errors(request, error_code=500)
+    
+    context = {
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'laser_pointer': user.laser.id,
+    }
+
+    return render(request, 'settings.html', context)
+
 
 def errors(request, error_code=404):
     context = {
