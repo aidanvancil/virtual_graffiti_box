@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+import base64
+import time
 from . import api
 HOST = "localhost:8000"
 
@@ -48,12 +50,18 @@ HOST = "localhost:8000"
         
 #     return render(request, 'signup.html', context)
 
-def validate_code(request, code):
-    return HttpResponse(api.code_validation(code))
 
 def admin_panel(request):
-    code = api.generate_code()
-    context = {'code': code}
+    user_id = request.session.get('user_id')
+    if not user_id:
+        user_id = base64.b64encode(str(time.time()).encode()).decode()[:10]
+        request.session['user_id'] = user_id
+
+    code, expiration = api.get_user_code(user_id)
+    context = {
+        'code': code,
+        'countdown': expiration
+    }
 
     return render(request, 'admin_panel.html', context)
 

@@ -16,13 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
-from . import views, settings
+from . import views, settings, api
 from django.conf.urls.static import static
 
 urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
     path('', views.admin_panel, name='admin_panel'),
-    path('api/v1/validate_code/<int:code>/', views.validate_code, name='settings'),
+    path('api/v1/validate_code/<int:code>/', api.validate_code, name='settings'),
     re_path(r'^.*/$', views.errors, name='errors'),
 ]
 

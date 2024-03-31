@@ -40,6 +40,7 @@ if RENDER_EXTERNAL_HOSTNAME:
 #CSRF_TRUSTED_ORIGINS = ['https://27fc-47-33-18-76.ngrok-free.app/']
 #SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 TAILWIND_APP_NAME = 'app'
+SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 
 # Application definition
 
@@ -99,7 +100,7 @@ WSGI_APPLICATION = 'virtual_graffiti_box.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.dummy',
+        'ENGINE': 'django.db.backends.dummy'
     }
 }
 

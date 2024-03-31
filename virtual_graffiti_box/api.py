@@ -1,48 +1,46 @@
+from django.http import HttpResponse
+from django.shortcuts import render
 import base64
 import time
+import pytz
+
 from datetime import datetime, timedelta
+import random
+
 BASE_URL = 'api/v1/'
+pst_timezone = pytz.timezone('America/Los_Angeles')
 
 generated_codes = {}
-validated_codes = {}
 
-def generate_code():
-    current_time = datetime.now()
-    code =  str(10000 + int(time.time()) % 90000)
-    generated_codes[code] = current_time
-    return code
+def generate_code(user_id):
+    current_time = datetime.now().astimezone(pst_timezone)
+    code = str(10000 + random.randint(0, 89999))
+    expiration_time = current_time + timedelta(minutes=5)
+    generated_codes[user_id] = {'code': code, 'expiration_time': expiration_time}
+    return code, expiration_time
 
-def remove_expired_codes():
-    current_time = datetime.now()
-    expired_validated_codes = [code for code, creation_time in validated_codes.items() if current_time - creation_time > timedelta(hours=12)]
-    for code in expired_validated_codes:
-        del validated_codes[code]
-    
-    expired_generated_codes = [code for code, creation_time in generated_codes.items() if current_time - creation_time > timedelta(minutes=5)]
-    for code in expired_generated_codes:
-        del generated_codes[code]
+def get_user_code(user_id):
+    if user_id in generated_codes and generated_codes[user_id]['expiration_time'] > datetime.now().astimezone(pst_timezone):
+        return generated_codes[user_id]['code'], generated_codes[user_id]['expiration_time']
+    else:
+        return generate_code(user_id)
 
 def valid_code(code):
-    current_time = datetime.now()
+    current_time = datetime.now().astimezone(pst_timezone)
 
-    if code in validated_codes:
-        creation_time = validated_codes[code]
-        if current_time - creation_time <= timedelta(hours=12):
-            return True
-        else:
-            del validated_codes[code]
-    elif code in generated_codes:
-        creation_time = generated_codes[code]
-        if current_time - creation_time <= timedelta(minutes=5):
-            return True
-        else:
-            del generated_codes[code]
+    for user_id, data in generated_codes.items():
+        if data['code'] == code:
+            if data['expiration_time'] > current_time:
+                return True
+            else:
+                del generated_codes[user_id]
+                break
+
     return False
 
-def code_validation(code):
-    remove_expired_codes()
-    if code and valid_code(code):
-        validated_codes[code] = datetime.now()
-        return 200
-    return 400
-
+def validate_code(request, code):
+    if valid_code(code):
+        user_id = request.session.get('user_id')
+        generated_codes[user_id]['expiration_time'] = datetime.now().astimezone(pst_timezone) + timedelta(hours=12)
+        return HttpResponse(status=200)
+    return HttpResponse(status=400)

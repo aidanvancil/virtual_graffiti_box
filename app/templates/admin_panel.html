@@ -7,51 +7,13 @@
 <div class="flex items-center justify-center h-screen mt-[-4%]">
     <div class="w-full  flex flex-col items-center justify-center">
         <div class="w-full bg-[#6d3c8c] text-white rounded-lg py-8 flex flex-col items-center justify-center space-y-4 animate-fade animate-once animate-duration-700 animate-ease-in-out ">
-            <h1 class="text-4xl font-bold animate-fade-right animate-once animate-duration-500 animate-delay-[300ms] animate-ease-in-out ">Welcome to [Online Mode]!</h1>
+            <h1 class="text-4xl font-bold animate-fade-right animate-once animate-duration-500 animate-delay-[300ms] animate-ease-in-out ">Get Connected!</h1>
             <p class="text-lg animate-fade-right animate-once animate-duration-500 animate-delay-[400ms] animate-ease-in-out ">Your unique 5-digit code:</p>
-            <div id="codeDisplay" class="bg-[#9843cd] text-5xl px-6 font-bold rounded-lg py-4 animate-fade-right animate-once animate-duration-500 animate-delay-[300ms] animate-ease-in-out "></div>
-            <p class="text-lg animate-fade-right animate-once animate-duration-500 animate-delay-[500ms] animate-ease-in-out ">This code will refresh in <span id="countdown">5:00</span> minutes if not used.</p>
+            <div id="codeDisplay" class="bg-[#9843cd] text-5xl px-6 font-bold rounded-lg py-4 animate-fade-right animate-once animate-duration-500 animate-delay-[300ms] animate-ease-in-out "><p>{{ code }}</p></div>
+            <p class="text-lg animate-fade-right animate-once animate-duration-500 animate-delay-[500ms] animate-ease-in-out ">
+                This code will refresh at <span id="countdown">{{ countdown }}</span> if not used.
+            </p>        
         </div>
     </div>
 </div>
-
-<script>
-    function generateCode() {
-        return Math.floor(10000 + Math.random() * 90000);
-    }
-
-    function updateCodeDisplay() {
-        const codeDisplay = document.getElementById('codeDisplay');
-        const code = generateCode();
-        codeDisplay.textContent = 'Refresh page for new code.';
-        return code;
-    }
-
-    function updateCountdown(minutes, seconds) {
-        const countdown = document.getElementById('countdown');
-        countdown.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    }
-
-    function startCountdown() {
-        let totalSeconds = 300; // 5 minutes
-        const timerInterval = setInterval(() => {
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-            updateCountdown(minutes, seconds);
-            if (totalSeconds === 0) {
-                clearInterval(timerInterval);
-                const code = updateCodeDisplay();
-                totalSeconds = 300;
-                startCountdown();
-            } else {
-                totalSeconds--;
-            }
-        }, 1000);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const code = updateCodeDisplay();
-        startCountdown();
-    });
-</script>
 {% endblock %}
