@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import base64
+import datetime
 import time
 from . import api
 HOST = "localhost:8000"
@@ -58,8 +59,9 @@ def admin_panel(request):
         request.session['user_id'] = user_id
 
     code, expiration = api.get_user_code(user_id)
+    expiration = expiration.strftime("%B %d, %Y @ %l:%M %p")
     context = {
-        'code': code,
+        'code': code,   
         'countdown': expiration
     }
 
