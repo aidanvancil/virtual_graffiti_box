@@ -39,6 +39,7 @@ def valid_code(code):
     return False
 
 def validate_code(request, code):
+    code = str(code)
     if valid_code(code):
         user_id = request.session.get('user_id')
         generated_codes[user_id]['expiration_time'] = datetime.now().astimezone(pst_timezone) + timedelta(hours=12)
