@@ -4,6 +4,7 @@ import base64
 import time
 import json
 import pytz
+import hashlib
 from app.models import UserProfile, Laser
 from datetime import datetime, timedelta
 import random
@@ -14,19 +15,22 @@ BASE_URL = 'api/v1/'
 pst_timezone = pytz.timezone('America/Los_Angeles')
 
 generated_codes = {}
+generated_user_ids = {}
 
 def generate_code(user_id):
     current_time = datetime.now().astimezone(pst_timezone)
     code = str(10000 + random.randint(0, 89999))
     expiration_time = current_time + timedelta(minutes=5)
     generated_codes[user_id] = {'code': code, 'expiration_time': expiration_time}
-    return code, expiration_time
+    return str(code), expiration_time
 
 def get_user_code(user_id):
     if user_id in generated_codes and generated_codes[user_id]['expiration_time'] > datetime.now().astimezone(pst_timezone):
         return generated_codes[user_id]['code'], generated_codes[user_id]['expiration_time']
     else:
-        return generate_code(user_id)
+        code, expiration = generate_code(user_id)
+        generated_user_ids[code] = user_id
+        return code, expiration
 
 def valid_code(code):
     current_time = datetime.now().astimezone(pst_timezone)
@@ -44,7 +48,7 @@ def valid_code(code):
 def validate_code(request, code):
     code = str(code)
     if valid_code(code):
-        user_id = request.session.get('user_id')
+        user_id = generated_user_ids[code]
         generated_codes[user_id]['expiration_time'] = datetime.now().astimezone(pst_timezone) + timedelta(hours=4)
         return HttpResponse(status=200)
     return HttpResponse(status=400)

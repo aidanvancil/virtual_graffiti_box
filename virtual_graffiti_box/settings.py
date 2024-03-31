@@ -33,12 +33,17 @@ STATIC_URL = '/static/'
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     DATABASES = {'default': dj_database_url.config(os.environ.get('DATABASE_URL'))}
+    CORS_ORIGIN_ALLOW_ALL = False
+    CORS_ORIGIN_WHITELIST = [
+        'http://localhost:8001',
+    ]
 else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': 'db.sqlite3',
     }}
+    CORS_ORIGIN_ALLOW_ALL = True
 
     
 ALLOWED_HOSTS = ['localhost', '127.0.0.1'] if DEBUG else []
@@ -60,6 +65,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tailwind',
+    'corsheaders',
     'django_browser_reload',
     'app',
 ]
@@ -67,6 +73,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
