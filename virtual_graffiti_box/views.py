@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from . import api
 HOST = "localhost:8000"
 
 #UC01, FR4
@@ -48,9 +48,8 @@ HOST = "localhost:8000"
 #     return render(request, 'signup.html', context)
 
 def admin_panel(request):
-    context = {
-
-    } 
+    code = api.generate_code()
+    context = {'code': code}
 
     return render(request, 'admin_panel.html', context)
 
