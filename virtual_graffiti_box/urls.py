@@ -16,11 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
-from . import views
+from . import views, settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
-    path('admin/', admin.site.urls),
     path('', views.admin_panel, name='admin_panel'),
     #re_path(r'^.*/$', views.errors, name='errors'),
 ]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += [path('admin/', admin.site.urls)]
