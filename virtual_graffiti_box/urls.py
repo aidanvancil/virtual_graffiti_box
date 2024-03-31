@@ -23,6 +23,7 @@ urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
     path('', views.admin_panel, name='admin_panel'),
     path('settings/<str:user_identifier>/', views.settings, name='settings'),
+    path('api/v1/fetch_settings_url/<int:code>/', api.fetch_settings_url, name='fetch_settings_url'),
     path('api/v1/validate_code/<int:code>/', api.validate_code, name='validate_code'),
     re_path(r'^.*/$', views.errors, name='errors'),
 ]
