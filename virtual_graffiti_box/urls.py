@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
     path('', views.admin_panel, name='admin_panel'),
-    path('settings/<str:user_identifier>/', views.mobile_settings, name='settings'),
+    path('api/v1/validate_code/<int:code>/', views.validate_code, name='settings'),
     re_path(r'^.*/$', views.errors, name='errors'),
 ]
 

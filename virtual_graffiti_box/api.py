@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 import base64
 import time
 from datetime import datetime, timedelta
@@ -40,12 +39,10 @@ def valid_code(code):
             del generated_codes[code]
     return False
 
-def code_validation(request):
-    if request.method == 'GET':
-        code = request.GET.get('code')
-        remove_expired_codes()
-        if code and valid_code(code):
-            validated_codes[code] = datetime.now()
-            return HttpResponse(status=200)
-    return HttpResponse(status=400)
+def code_validation(code):
+    remove_expired_codes()
+    if code and valid_code(code):
+        validated_codes[code] = datetime.now()
+        return 200
+    return 400
 

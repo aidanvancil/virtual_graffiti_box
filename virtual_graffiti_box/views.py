@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from . import api
 HOST = "localhost:8000"
 
@@ -46,6 +47,9 @@ HOST = "localhost:8000"
 #         }
         
 #     return render(request, 'signup.html', context)
+
+def validate_code(request, code):
+    return HttpResponse(api.code_validation(code))
 
 def admin_panel(request):
     code = api.generate_code()
