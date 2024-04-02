@@ -10,7 +10,7 @@ from django.db import models
 '''
 
 class Laser(models.Model):
-    id = models.CharField(max_length=10, primary_key=True)
+    uid = models.CharField(max_length=10)
     color = models.CharField(max_length=30, default='#777777', null=True)
     size = models.IntegerField(default=10)
     code = models.IntegerField(default='00000')

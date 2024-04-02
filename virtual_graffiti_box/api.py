@@ -83,20 +83,19 @@ def validate_code(request, code):
             user_expiration_time += timedelta(hours=4)
 
         if code not in first_time_generation:
-            Laser.objects.create(id='Red', code=code)
-            Laser.objects.create(id='Green', code=code)
-            Laser.objects.create(id='Purple', code=code)
+            Laser.objects.create(uid='Red', code=code)
+            Laser.objects.create(uid='Green', code=code)
+            Laser.objects.create(uid='Purple', code=code)
             first_time_generation.add(code)
         return HttpResponse(status=200)
     return HttpResponse(status=400)
 
 def generate_settings_url(first_name, last_name, laser_pointer, code):
     print(first_name, last_name, laser_pointer)
-    laser_pointer = laser_pointer.capitalize()
     url = None
     try:
         if first_name and last_name and laser_pointer:
-            laser = Laser.objects.get(id=laser_pointer, code=code)
+            laser = Laser.objects.get(uid=laser_pointer, code=code)
             UserProfile.objects.create(first_name=first_name, last_name=last_name, laser=laser, code=code)
             base64_user_identifier = base64.b64encode(f"{first_name}_{last_name}_{laser_pointer}".encode('utf-8')).decode('utf-8')
             url = f"{HOST}/settings/{base64_user_identifier}/{code}"

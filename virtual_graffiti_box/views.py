@@ -29,7 +29,7 @@ def settings(request, user_identifier, code):
         return errors(request, error_code=302)
     
     try:
-        laser_pointer = Laser.objects.get(id=laser_pointer_id, code=code)
+        laser_pointer = Laser.objects.get(uid=laser_pointer_id, code=code)
         user = UserProfile.objects.get(first_name=first_name, last_name=last_name, laser=laser_pointer, code=code)
     except UserProfile.DoesNotExist:
         print("User profile does not exist.")
@@ -44,7 +44,7 @@ def settings(request, user_identifier, code):
     context = {
         'first_name': user.first_name,
         'last_name': user.last_name,
-        'laser_pointer': user.laser.id,
+        'laser_pointer': user.laser.uid,
     }
 
     return render(request, 'settings.html', context)

@@ -85,16 +85,13 @@
         const id = '{{laser_pointer}}';
         const color_input = document.getElementById('colorInput').value;
         const size_input = document.getElementById('sizeInput').value;
-        const style_input = document.getElementById('styleDropdown').value;
         var data = null;
 
         if (feature === 'color') {
             data = color_input;
         } else if (feature === 'size') {
             data = size_input;
-        } else if (feature === 'style') {
-            data = style_input;
-        }
+        } 
         console.log(data)
         const URL = 'http://localhost:8000/set_laser_' + feature + '/' + id + '/';
         
