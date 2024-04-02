@@ -30,19 +30,21 @@ DEBUG = 'RENDER' not in os.environ
 
 STATIC_URL = '/static/'
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
+    }
+}
+
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    DATABASES = {'default': dj_database_url.config(os.environ.get('DATABASE_URL'))}
+    DATABASES['default'].update(dj_database_url.config(os.environ.get('DATABASE_URL'), conn_max_age=600))
     CORS_ORIGIN_ALLOW_ALL = False
     CORS_ORIGIN_WHITELIST = [
         'http://localhost:8001',
     ]
 else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'db.sqlite3',
-    }}
     CORS_ORIGIN_ALLOW_ALL = True
 
     
