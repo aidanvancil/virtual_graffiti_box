@@ -21,7 +21,7 @@ def admin_panel(request):
 
     return render(request, 'admin_panel.html', context)
 
-def settings(request, user_identifier):
+def settings(request, user_identifier, code):
     try:
         user_identifier_decoded = base64.b64decode(user_identifier).decode('utf-8')
         first_name, last_name, laser_pointer_id = user_identifier_decoded.split('_')
@@ -29,8 +29,8 @@ def settings(request, user_identifier):
         return errors(request, error_code=302)
     
     try:
-        laser_pointer = Laser.objects.get(id=laser_pointer_id)
-        user = UserProfile.objects.get(first_name=first_name, last_name=last_name, laser=laser_pointer)
+        laser_pointer = Laser.objects.get(id=laser_pointer_id, code=code)
+        user = UserProfile.objects.get(first_name=first_name, last_name=last_name, laser=laser_pointer, code=code)
     except UserProfile.DoesNotExist:
         print("User profile does not exist.")
         return errors(request, error_code=302)

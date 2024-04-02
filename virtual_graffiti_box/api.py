@@ -90,17 +90,16 @@ def validate_code(request, code):
         return HttpResponse(status=200)
     return HttpResponse(status=400)
 
-def generate_settings_url(first_name, last_name, laser_pointer):
+def generate_settings_url(first_name, last_name, laser_pointer, code):
     print(first_name, last_name, laser_pointer)
     laser_pointer = laser_pointer.capitalize()
     url = None
     try:
         if first_name and last_name and laser_pointer:
-            print(Laser.objects.all())
-            laser = Laser.objects.get(id=laser_pointer)
-            UserProfile.objects.create(first_name=first_name, last_name=last_name, laser=laser)
+            laser = Laser.objects.get(id=laser_pointer, code=code)
+            UserProfile.objects.create(first_name=first_name, last_name=last_name, laser=laser, code=code)
             base64_user_identifier = base64.b64encode(f"{first_name}_{last_name}_{laser_pointer}".encode('utf-8')).decode('utf-8')
-            url = f"{HOST}/settings/{base64_user_identifier}"
+            url = f"{HOST}/settings/{base64_user_identifier}/{code}"
     except Exception as e:
         print(e)
         pass
@@ -116,7 +115,7 @@ def fetch_settings_url(request, code):
         if valid_code(code):
             user_id = generated_user_ids[code]
             generated_codes[user_id]['expiration_time'] = datetime.now().astimezone(pst_timezone) + timedelta(hours=4)
-            url = generate_settings_url(first_name, last_name, laser_pointer)
+            url = generate_settings_url(first_name, last_name, laser_pointer, code)
             if url:
                 response_data = {'url': url}
                 return HttpResponse(json.dumps(response_data), content_type='application/json', status=200)
