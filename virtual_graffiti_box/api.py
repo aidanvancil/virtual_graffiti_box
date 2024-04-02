@@ -35,7 +35,7 @@ def cleanup_expired_codes():
                 break
         
         first_time_generation.remove(code)
-        UserProfile.objects.filter(code=user_id).delete()
+        UserProfile.objects.filter(code=code).delete()
         Laser.objects.filter(code=code).delete()
 
 def generate_code(user_id):
@@ -103,7 +103,6 @@ def generate_settings_url(first_name, last_name, laser_pointer, code):
     except Exception as e:
         print(e)
         pass
-    print(url)
     return url
 
 def fetch_settings_url(request, code):
