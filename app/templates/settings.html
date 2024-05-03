@@ -16,9 +16,8 @@
             <h1 class="text-center underline text-3xl md:text-5xl">Settings</h1>
             <div>
                 <div class="mb-8 mt-8 flex space-x-4 justify-center max-w-xs text-center">
-                    <p for="first_name">Hello, <span class="text-gray-500 font-bold"> {{ first_name }} {{ last_name }}!</span> Configure your laser pointer to your desired settings (font, size, style, and more).</p>
+                    <p for="first_name">Hello, <span class="text-gray-500 font-bold"> {{ first_name }} {{ last_name }}!</span> Configure your laser pointer to your desired settings (color, size).</p>
                 </div>
-                
                 <div class="mb-8 flex space-x-4 justify-center">
                     <label for="laser" class="text-white">
                         Your Laser's Color:
@@ -61,7 +60,7 @@
     }
 
     function getLaser(id) {
-        const URL = 'http://localhost:8000/get_laser/' + id;
+        const URL = '{{host}}/get_laser/' + id + '/{{code}}/';
         fetch(URL)
             .then(response => response.json())
             .then(data => {
@@ -93,7 +92,7 @@
             data = size_input;
         } 
         console.log(data)
-        const URL = 'http://localhost:8000/set_laser_' + feature + '/' + id + '/';
+        const URL = '{{host}}/set_laser_' + feature + '/' + id + '/{{code}}/';
         
 
         fetch(URL, {
