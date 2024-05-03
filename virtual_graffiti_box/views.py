@@ -1,10 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from app.models import UserProfile, Laser
+import json
 import base64
 import datetime
 import time
-from . import api
+from . import api, settings
+
+HOST = "http://localhost:8000" if settings.DEBUG else "https://virtual-graffiti-box.onrender.com"
 
 def admin_panel(request):
     user_id = request.session.get('user_id')
@@ -16,10 +19,43 @@ def admin_panel(request):
     expiration = expiration.strftime("%B %d, %Y @ %l:%M %p")
     context = {
         'code': code,   
-        'countdown': expiration
+        'countdown': expiration,
+        'host': HOST
     }
 
     return render(request, 'admin_panel.html', context)
+
+def get_laser(request, laser_id, code):
+    if request.method == 'GET':
+        try:
+            laser = Laser.objects.get(code=code, uid=laser_id)
+        except Laser.DoesNotExist:
+            return errors(request, error_code=302)
+
+        return JsonResponse({
+            'color': laser.color,
+            'size': laser.size,
+        })
+        
+    return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405)
+
+def set_laser_color(request, laser_id, code):
+    if api.valid_code(code):
+        data = json.loads(request.body)
+        laser = Laser.objects.get(code=code, uid=laser_id)
+        laser.color = data['data']
+        laser.save()
+        return JsonResponse({'success': True}, status=200)
+    return JsonResponse({'success': False}, status=404)
+
+def set_laser_size(request, laser_id, code):
+    if api.valid_code(code):
+        data = json.loads(request.body)
+        laser = Laser.objects.get(code=code, uid=laser_id)
+        laser.size = data['data']
+        laser.save()
+        return JsonResponse({'success': True}, status=200)
+    return JsonResponse({'success': False}, status=404)
 
 def settings(request, user_identifier, code):
     try:
@@ -45,6 +81,8 @@ def settings(request, user_identifier, code):
         'first_name': user.first_name,
         'last_name': user.last_name,
         'laser_pointer': user.laser.uid,
+        'host': HOST,
+        'code': code
     }
 
     return render(request, 'settings.html', context)
