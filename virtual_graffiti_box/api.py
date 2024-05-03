@@ -61,9 +61,8 @@ def get_user_code(user_id):
 
 def valid_code(code):
     current_time = datetime.now().astimezone(pst_timezone)
-
     for user_id, data in generated_codes.items():
-        if data['code'] == code:
+        if str(data['code']) == str(code):
             if data['expiration_time'] > current_time:
                 return True
             else:
@@ -88,11 +87,9 @@ def validate_code(request, code):
             Laser.objects.create(uid='Purple', code=code)
             first_time_generation.add(code)
         response = HttpResponse(status=200)
-        response['Access-Control-Allow-Origin'] = '*'
         return response
     response_data = json.dumps({"error": "Invalid Code. See server invalidation.", "code": code})
     response = HttpResponse(response_data, content_type="application/json", status=400)
-    response['Access-Control-Allow-Origin'] = '*'
     return response
 
 def generate_settings_url(first_name, last_name, laser_pointer, code):
