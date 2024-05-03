@@ -87,9 +87,13 @@ def validate_code(request, code):
             Laser.objects.create(uid='Green', code=code)
             Laser.objects.create(uid='Purple', code=code)
             first_time_generation.add(code)
-        return HttpResponse(status=200)
+        response = HttpResponse(status=200)
+        response['Access-Control-Allow-Origin'] = '*'
+        return response
     response_data = json.dumps({"error": generate_code, "code": code})
-    return HttpResponse(response_data, content_type="application/json", status=400)
+    response = HttpResponse(response_data, content_type="application/json", status=400)
+    response['Access-Control-Allow-Origin'] = '*'
+    return response
 
 def generate_settings_url(first_name, last_name, laser_pointer, code):
     print(first_name, last_name, laser_pointer)
