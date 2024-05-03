@@ -25,6 +25,9 @@ urlpatterns = [
     path('settings/<str:user_identifier>/<int:code>/', views.settings, name='settings'),
     path('api/v1/fetch_settings_url/<int:code>/', api.fetch_settings_url, name='fetch_settings_url'),
     path('api/v1/validate_code/<int:code>/', api.validate_code, name='validate_code'),
+    path('set_laser_color/<str:laser_id>/<int:code>/', views.set_laser_color, name='set_laser_color'),
+    path('set_laser_size/<str:laser_id>/<int:code>/', views.set_laser_size, name='set_laser_size'),
+    path('get_laser/<str:laser_id>/<int:code>/', views.get_laser, name='get_laser'),
     re_path(r'^.*/$', views.errors, name='errors'),
 ]
 
