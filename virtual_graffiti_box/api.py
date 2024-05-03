@@ -90,7 +90,7 @@ def validate_code(request, code):
         response = HttpResponse(status=200)
         response['Access-Control-Allow-Origin'] = '*'
         return response
-    response_data = json.dumps({"error": generate_code, "code": code})
+    response_data = json.dumps({"error": "Invalid Code. See server invalidation.", "code": code})
     response = HttpResponse(response_data, content_type="application/json", status=400)
     response['Access-Control-Allow-Origin'] = '*'
     return response
