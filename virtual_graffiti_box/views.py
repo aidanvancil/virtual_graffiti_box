@@ -10,6 +10,12 @@ from . import api, settings
 HOST = "http://localhost:8000" if settings.DEBUG else "https://virtual-graffiti-box.onrender.com"
 
 def admin_panel(request):
+    """
+    Renders the admin panel view.
+
+    Returns:
+        HttpResponse: Admin panel view.
+    """
     user_id = request.session.get('user_id')
     if not user_id:
         user_id = base64.b64encode(str(time.time()).encode()).decode()[:10]
@@ -26,6 +32,17 @@ def admin_panel(request):
     return render(request, 'admin_panel.html', context)
 
 def get_laser(request, laser_id, code):
+    """
+    Retrieves laser information.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        laser_id (str): The laser identifier.
+        code (str): The user code.
+
+    Returns:
+        JsonResponse: Laser information.
+    """
     if request.method == 'GET':
         try:
             laser = Laser.objects.get(code=code, uid=laser_id)
@@ -40,6 +57,17 @@ def get_laser(request, laser_id, code):
     return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405)
 
 def set_laser_color(request, laser_id, code):
+    """
+    Sets the color of a laser.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        laser_id (str): The laser identifier.
+        code (str): The user code.
+
+    Returns:
+        JsonResponse: Success or failure response.
+    """
     if api.valid_code(code):
         data = json.loads(request.body)
         laser = Laser.objects.get(code=code, uid=laser_id)
@@ -49,6 +77,17 @@ def set_laser_color(request, laser_id, code):
     return JsonResponse({'success': False}, status=404)
 
 def set_laser_size(request, laser_id, code):
+    """
+    Sets the size of a laser.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        laser_id (str): The laser identifier.
+        code (str): The user code.
+
+    Returns:
+        JsonResponse: Success or failure response.
+    """
     if api.valid_code(code):
         data = json.loads(request.body)
         laser = Laser.objects.get(code=code, uid=laser_id)
@@ -58,6 +97,17 @@ def set_laser_size(request, laser_id, code):
     return JsonResponse({'success': False}, status=404)
 
 def settings(request, user_identifier, code):
+    """
+    Renders the settings view.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        user_identifier (str): The base64-encoded user identifier.
+        code (str): The user code.
+
+    Returns:
+        HttpResponse: Settings view.
+    """
     try:
         user_identifier_decoded = base64.b64decode(user_identifier).decode('utf-8')
         first_name, last_name, laser_pointer_id = user_identifier_decoded.split('_')
@@ -89,6 +139,16 @@ def settings(request, user_identifier, code):
 
 
 def errors(request, error_code=404):
+    """
+    Renders the error view.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        error_code (int, optional): The error code. Defaults to 404.
+
+    Returns:
+        HttpResponse: Error view.
+    """
     context = {
         'error_code': error_code
     }

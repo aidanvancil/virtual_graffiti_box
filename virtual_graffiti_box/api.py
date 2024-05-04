@@ -20,6 +20,9 @@ first_time_generation = set()
 
 
 def cleanup_expired_codes():
+    """
+    Cleans up expired user codes and associated data.
+    """
     current_time = datetime.now(pst_timezone)
     expired_user_ids = []
     for user_id, data in generated_codes.items():
@@ -39,6 +42,15 @@ def cleanup_expired_codes():
         Laser.objects.filter(code=code).delete()
 
 def generate_code(user_id):
+    """
+    Generates a unique code for a user.
+
+    Args:
+        user_id (str): The unique identifier for the user.
+
+    Returns:
+        tuple: A tuple containing the generated code and its expiration time.
+    """
     current_time = datetime.now().astimezone(pst_timezone)
     code = None
     while True:
@@ -52,6 +64,15 @@ def generate_code(user_id):
     return str(code), expiration_time
 
 def get_user_code(user_id):
+    """
+    Retrieves the user code associated with the provided user identifier.
+
+    Args:
+        user_id (str): The unique identifier for the user.
+
+    Returns:
+        tuple: A tuple containing the user code and its expiration time.
+    """
     if user_id in generated_codes and generated_codes[user_id]['expiration_time'] > datetime.now().astimezone(pst_timezone):
         return generated_codes[user_id]['code'], generated_codes[user_id]['expiration_time']
     else:
@@ -60,6 +81,15 @@ def get_user_code(user_id):
         return code, expiration
 
 def valid_code(code):
+    """
+    Checks if a code is valid and not expired.
+
+    Args:
+        code (str): The code to validate.
+
+    Returns:
+        bool: True if the code is valid and not expired, False otherwise.
+    """
     current_time = datetime.now().astimezone(pst_timezone)
     for user_id, data in generated_codes.items():
         if str(data['code']) == str(code):
@@ -72,6 +102,16 @@ def valid_code(code):
     return False
 
 def validate_code(request, code):
+    """
+    Validates a user code and updates the associated data if necessary.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        code (str): The code to validate.
+
+    Returns:
+        HttpResponse: An HTTP response indicating the result of the validation.
+    """
     code = str(code)
     if valid_code(code):
         user_id = generated_user_ids[code]
@@ -93,7 +133,18 @@ def validate_code(request, code):
     return response
 
 def generate_settings_url(first_name, last_name, laser_pointer, code):
-    print(first_name, last_name, laser_pointer)
+    """
+    Generates a settings URL for a user.
+
+    Args:
+        first_name (str): The first name of the user.
+        last_name (str): The last name of the user.
+        laser_pointer (str): The pointer of the laser associated with the user.
+        code (str): The user code.
+
+    Returns:
+        str: The generated settings URL.
+    """
     url = None
     try:
         if first_name and last_name and laser_pointer:
@@ -107,6 +158,16 @@ def generate_settings_url(first_name, last_name, laser_pointer, code):
     return url
 
 def fetch_settings_url(request, code):
+    """
+    Fetches the settings URL for a user.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        code (str): The user code.
+
+    Returns:
+        HttpResponse: An HTTP response containing the settings URL or an error message.
+    """
     if request.method == 'GET':
         code = str(code)
         first_name = request.GET.get('firstname')
